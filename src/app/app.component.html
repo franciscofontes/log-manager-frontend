@@ -1,23 +1,29 @@
-<div class="container">
-    <header class="p-3 bg-dark text-white">
-        <div class="container">
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                    LOG MANAGER
-                </a>
-                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a routerLink="/" class="nav-link px-2 text-white"><i class="bi bi-house"></i> Home</a></li>
-                    <li><a routerLink="/logs" class="nav-link px-2 text-white"><i class="bi bi-files"></i> Logs</a></li>
-                </ul>
+<nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" (click)="openPage('home')">
+            <img src="assets/images/logo.png" />
+          </a>
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasic">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+    <div id="navbarBasic" class="navbar-menu">
+        <div class="navbar-start">
+            <div class="navbar-item has-dropdown is-hoverable" *ngFor="let p of appPages">
+                <span class="navbar-item">
+                    <a class="navbar-link is-arrowless" (click)="openPage(p.url)">
+                        <i class="material-icons with-label">{{p.icon}}</i>
+                        <span>{{p.title}}</span>
+                    </a>
+                </span>
             </div>
         </div>
-    </header>
-    <main>
-        <router-outlet></router-outlet>
-    </main>
-    <footer class="footer mt-auto py-3 bg-light">
-        <div class="container">
-            <span class="text-muted">Place sticky footer content here.</span>
+        <div class="navbar-end">
+            <div class="navbar-item">
+            </div>
         </div>
-    </footer>
-</div>
+    </div>
+</nav>
+<router-outlet></router-outlet>

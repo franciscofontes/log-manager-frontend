@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home.component';
 
-const homeRoutes: Routes = [
+const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
@@ -23,7 +23,7 @@ const homeRoutes: Routes = [
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild(homeRoutes)
+    RouterModule.forChild(routes)
   ],
   exports: [
     RouterModule

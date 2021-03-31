@@ -1,0 +1,89 @@
+<section class="section">
+  <i class="material-icons with-title">article</i>
+  <h2 class="subtitle is-inline">Logs</h2>
+
+  <div class="is-divider"></div>
+
+  <div class="level">
+    <div class="level-left">
+      <div class="level-item">
+        <a routerLink="form" class="button is-primary">
+          <i class="material-icons with-label">add</i>
+          <span>Novo</span>
+        </a>
+      </div>
+    </div>
+    <div class="level-right">
+      <div class="field has-addons">
+        <div class="control">
+          <div class="select" style="padding-right: 5px;">
+            <select #select (change)="changeFiltro(select)">
+              <option value="ativados">Ativados</option>
+              <option value="desativados">Desativados</option>
+            </select>
+          </div>
+        </div>
+        <div class="control has-icons-left" style="width: 300px">
+          <input appDebounceKeyup (afterDebounce)="filtrar()" [(ngModel)]="filtroPeloIP" class="input"
+            placeholder="Filtrar pelo IP" />
+          <span class="icon is-left">
+            <i class="material-icons">search</i>
+          </span>
+        </div>
+        <div class="control">
+          <a (click)="limparFiltro()" class="button is-primary tooltip" data-tooltip="Limpar">
+            <i class="material-icons">close</i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="page.content.length > 0">
+    <table class="table is-fullwidth is-striped">
+      <thead>
+        <tr>
+          <th style="width: 5%">ID</th>
+          <th style="width: 10%">Data</th>
+          <th>IP</th>
+          <th>Status</th>
+          <th>Request</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of page.content;">
+          <td>{{ item.id }}</td>
+          <td>{{ item.data | date: 'dd/MM/yyyy'}}</td>
+          <td>{{ item.ip }}</td>
+          <td>{{ item.status }}</td>
+          <td>{{ item.request }}</td>
+          <td>
+            <div class="buttons are-normal">
+              <a class="button" (click)="abrirDialog(item)">
+                <i class="material-icons">visibility</i>
+              </a>
+              <a [routerLink]="['form', item.id]" class="button">
+                <i class="material-icons">edit</i>
+              </a>
+              <a class="button tooltip" (click)="remover(item)" data-tooltip="Remover">
+                <i class="material-icons">delete</i>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="column is-10">
+      <mat-paginator [length]="page.totalElements" [pageIndex]="page.number" [pageSize]="page.size"
+        [pageSizeOptions]="[12, 24, 36]" [showFirstLastButtons]="true" (page)="pageEvent = handlePage($event)">
+      </mat-paginator>
+    </div>
+
+  </div>
+
+  <div *ngIf="page.content.length === 0">
+    <p>Nenhum item cadastrado.</p>
+  </div>
+</section>
