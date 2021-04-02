@@ -1,1 +1,83 @@
-<p>log-form works!</p>
+<section class="section">
+
+    <i class="material-icons with-title">article</i>
+    <h2 class="subtitle is-inline" *ngIf="!edicao">Novo Log</h2>
+    <h2 class="subtitle is-inline" *ngIf="edicao">Editar Log</h2>
+
+    <div class="is-divider"></div>
+
+    <form *ngIf="formGroup" [formGroup]="formGroup" (ngSubmit)="salvar(); $event.preventDefault()" class="is-grouped">
+
+        <div class="columns">
+            <div class="column">
+                <label class="label">Data</label>
+                <mat-form-field appearance="fill">                    
+                    <input formControlName="data" matInput [matDatepicker]="picker">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <span class="is-size-8 pt-0">{{f.data.value | date: formatterHelper.DATE}}</span>
+            </div>
+<!--             <div class="column">p
+                <label class="label">Hora</label>
+                <mat-form-field appearance="fill">
+                    <input formControlName="hora" [ngxTimepicker]="fullTime" [format]="24" matInput readonly>
+                    <ngx-material-timepicker #fullTime></ngx-material-timepicker>
+                </mat-form-field>
+            </div> -->
+            <div class="column">
+                <label class="label">IP</label>
+                <mat-form-field appearance="fill">
+                    <input formControlName="ip" maxlength="15" matInput>
+                </mat-form-field>
+            </div>
+            <div class="column">
+                <label class="label">Status</label>
+                <mat-form-field appearance="fill">
+                    <input formControlName="status" matInput mask="000">
+                </mat-form-field>
+            </div>
+            <div class="column">
+                <label class="label">Request</label>
+                <mat-form-field appearance="fill">
+                    <input formControlName="request" matInput>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                <div class="field">
+                    <label class="label">User agent</label>
+                    <mat-form-field appearance="fill">
+                        <textarea formControlName="userAgent" matInput rows="10" cols="100"></textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+    <br />
+
+    <div class="field is-grouped">
+        <div class="control">
+            <button class="button is-success" (click)="salvar()">
+                <i class="material-icons with-label">save</i>
+                <span>Salvar</span>
+            </button>
+        </div>
+        <div class="control">
+            <a *ngIf="edicao; else cadastro" routerLink="../.." class="button">
+                <i class="material-icons with-label">close</i>
+                <span>Cancelar</span>
+            </a>
+            <ng-template #cadastro>
+                <a routerLink=".." class="button">
+                    <i class="material-icons with-label">close</i>
+                    <span>Cancelar</span>
+                </a>
+            </ng-template>
+        </div>
+    </div>
+
+</section>

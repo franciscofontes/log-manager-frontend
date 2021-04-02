@@ -4,5 +4,5 @@ export interface Log {
     ip: string;
     status: string;
     request: string;
-    userAgent: string;
+    userAgent?: string;
 }

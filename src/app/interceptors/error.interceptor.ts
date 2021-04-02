@@ -2,61 +2,35 @@ import { HttpEvent, HttpHandler, HttpRequest, HttpErrorResponse, HttpInterceptor
 import { catchError, retry } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
+import { AlertService } from '../shared/alert/alert.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
-  constructor(public snackBar: MatSnackBar) {
-  }
+  constructor(private alertService: AlertService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     return next.handle(request).pipe(retry(1), catchError((httpError: HttpErrorResponse) => {
-
-      if (!httpError.status) {
-        let error = httpError.error;
-        error = JSON.parse(error);
-      }
-
-      console.log(httpError);
-
-      switch (httpError.status) {        
-        case 403:
-          this.handle403();
-          break;
-
-        case 422:
-          this.handle422(httpError);
-          break;
-
-        default:
-          this.handleDefaultEror(httpError);
-      }
-
+      this.handleError(httpError);
       return throwError(httpError);
     }))
   }
 
-  handle422(httpError) {
-    let msg = httpError.errors;
-    this.openSnackBar(msg, 'Validação');
+  handleError(httpError) {
+    let detail = "";
+    switch (httpError.status) {
+      case 0:
+        detail = "Falha ao conectar servidor";
+        break;
+      case 422:
+        detail = "(422) - " + httpError.error;
+        break;
+      default:
+        detail = "(" + httpError.status + ")";
+        break;
+    }
+    this.alertService.error("Ocorreu um erro. " + detail, []);
   }
 
-  handle403() {
-    console.log("Acesso negado!");
-  }
-
-  handleDefaultEror(httpError) {
-    this.openSnackBar(httpError.message, 'Erro ' + httpError.status);
-  }
-
-  openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
-      duration: 4000,
-      verticalPosition: 'top',
-      direction: 'ltr',
-      panelClass: 'snackbar-alerta'
-    });
-  }
 }

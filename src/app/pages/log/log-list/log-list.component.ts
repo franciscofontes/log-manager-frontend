@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Page } from 'src/app/models/page';
 import { Log } from 'src/app/models/log';
 import { LogService } from 'src/app/services/log.service';
-import { DialogLogComponent } from '../dialog-log/dialog-log.component';
 import { LogDTO } from 'src/app/models/log.dto';
+import { AlertService } from 'src/app/shared/alert/alert.service';
+import { FormatterHelper } from 'src/app/shared/helpers/formatter.helper';
+import { DialogLogComponent } from '../dialog-log/dialog-log.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'log-list',
@@ -15,43 +16,80 @@ import { LogDTO } from 'src/app/models/log.dto';
 })
 export class LogListComponent implements OnInit {
 
-  filtroPeloIP = '';
-  orderBy = '';
-  direction = '';
+  filtroPelaData = null;
+  filtroPeloIP = "";
+  filtroPeloStatus = "";
+  filtroPeloRequest = "";
+  filtroPeloUserAgent = "";
+  orderBy = "";
+  direction = "";
 
   page: Page<LogDTO>;
 
   constructor(
     private service: LogService,
     private route: ActivatedRoute,
-    private dialog: MatDialog,
-    public snackBar: MatSnackBar
+    private alertService: AlertService,
+    public formatterHelper: FormatterHelper,
+    public dialog: MatDialog
   ) { }
 
-  ngOnInit() {
+  ngOnInit() {''
     this.page = this.route.snapshot.data.page;
     this.filtrar();
   }
 
   changeFiltro(select: any) {
-    let valor: any = select.options[select.selectedIndex].value;    
+    let valor: any = select.options[select.selectedIndex].value;
     this.filtrar();
   }
 
-  filtrar() {   
+  filtrar() {
+    this.service.listarPorFiltro(this.filtroPelaData, this.filtroPeloIP, this.filtroPeloStatus, this.filtroPeloRequest, this.filtroPeloUserAgent).subscribe(
+      page => {
+        this.page = page;
+      },
+      error => { }
+    );
   }
 
   limparFiltro() {
-    this.filtroPeloIP = '';
+    this.filtroPelaData = null;
+    this.filtroPeloIP = "";
     this.filtrar();
   }
 
-  onSort(event) {   
+  onSort(event) {
+    this.orderBy = event.sorts[0].prop;
+    this.direction = event.sorts[0].dir;
+    this.service
+      .listarPorFiltro(
+        this.filtroPelaData, 
+        this.filtroPeloIP, 
+        this.filtroPeloStatus, 
+        this.filtroPeloRequest, 
+        this.filtroPeloUserAgent,
+        0,
+        undefined,
+        this.orderBy,
+        this.direction
+      )
+      .subscribe(
+        page => {
+          this.page = page;
+        },
+        error => { }
+      );    
   }
 
-  handlePage(event) {   
-      this.service
-      .listarPorPagina(
+  handlePage(event) {
+    this.service
+      .listarPorFiltro(
+        this.filtroPelaData, 
+        this.filtroPeloIP, 
+        this.filtroPeloStatus, 
+        this.filtroPeloRequest, 
+        this.filtroPeloUserAgent,        
         event.pageIndex,
         event.pageSize,
         this.orderBy,
@@ -62,37 +100,30 @@ export class LogListComponent implements OnInit {
           this.page = page;
         },
         error => { }
-      );     
+      );
   }
 
   abrirDialog(log: Log) {
-    const dialogRef = this.dialog.open(DialogLogComponent, {
+    console.log("abrir dialog " + log);
+    const dialogRef = this.dialog.open(DialogLogComponent);
+    /* const dialogRef = this.dialog.open(DialogLogComponent, {
       width: '80%',
       maxHeight: '95%',
       disableClose: true,
       data: log
     });
     dialogRef.afterClosed().subscribe(result => {
-    });
+    }); */
   }
 
   remover(log: Log) {
     this.service.remover(log).subscribe(res => {
-      this.openSnackBar('Log de ID: ' + log.id + " removido com sucesso", 'Info');
+      this.alertService.success("Log removido com sucesso. ID: " + log.id, []);
       this.filtrar();
     },
       error => {
       }
     );
-  }
-
-  openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
-      duration: 4000,
-      verticalPosition: 'top',
-      direction: 'rtl',
-      panelClass: 'snackbar-alerta'
-    });
   }
 
 }

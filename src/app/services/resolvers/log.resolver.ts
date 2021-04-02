@@ -8,9 +8,8 @@ import { LogService } from '../log.service';
 
 @Injectable()
 export class LogResolver implements Resolve<Observable<Page<LogDTO>>> {
-    constructor(
-        public service: LogService
-    ) { }
+    
+    constructor(public service: LogService) { }
 
     resolve() {
         return this.service.listarPorPagina();

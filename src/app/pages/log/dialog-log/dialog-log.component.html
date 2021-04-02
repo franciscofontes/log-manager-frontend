@@ -1,1 +1,20 @@
-<p>dialog-log works!</p>
+<h1 mat-dialog-title>Log #{{log.id}}</h1>
+
+<mat-dialog-content>
+    <div>
+        <div class="tags are-medium">
+            <span class="tag is-default"><b>Data:</b> &nbsp; {{ log.data }}</span>
+            <span class="tag is-default"><b>IP:</b> &nbsp; {{ log.ip }}</span>
+            <span class="tag is-default"><b>Status:</b> &nbsp; {{ log.status }}</span>
+            <span class="tag is-default"><b>Request:</b> &nbsp; {{ log.request}}</span>
+            <span class="tag is-default"><b>User agent:</b> &nbsp; {{ log.userAgent}}</span>
+        </div>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button class="button is-default" (click)="fechar()">
+        <i class="material-icons with-label">close</i>
+        <span>Fechar</span>
+    </button>
+</mat-dialog-actions>

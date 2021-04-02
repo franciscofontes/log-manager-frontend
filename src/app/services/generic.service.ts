@@ -4,14 +4,14 @@ import { environment } from 'src/environments/environment';
 import { Entidade } from '../models/entidade';
 import { Page } from '../models/page';
 
-export abstract class GenericService<T extends Entidade> {
+export abstract class GenericService<T extends Entidade, DTO extends Entidade> {
 
   baseUrl = environment.baseUrl;
 
   constructor(public http: HttpClient, public endpoint: string) { }
 
-  listar(): Observable<T[]> {
-    return this.http.get<T[]>(
+  listar(): Observable<DTO[]> {
+    return this.http.get<DTO[]>(
       `${this.baseUrl}/${this.endpoint}`
     );
   }
@@ -27,7 +27,7 @@ export abstract class GenericService<T extends Entidade> {
     lines?: number,
     orderBy?: string,
     direction?: string
-  ): Observable<Page<T>> {
+  ): Observable<Page<DTO>> {
     let params = new HttpParams();
     if (page) {
       params = params.append('page', page.toString());
@@ -41,7 +41,7 @@ export abstract class GenericService<T extends Entidade> {
     if (direction) {
       params = params.append('direction', direction.toUpperCase());
     }
-    return this.http.get<Page<T>>(
+    return this.http.get<Page<DTO>>(
       `${this.baseUrl}/${this.endpoint}/page`,
       { params }
     );
