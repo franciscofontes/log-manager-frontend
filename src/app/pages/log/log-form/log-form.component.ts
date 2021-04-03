@@ -19,7 +19,10 @@ export class LogFormComponent implements OnInit {
   edicao = false;
   routeParams: Params;
   formGroup: FormGroup;
-  logDTO: LogDTO = { id: null, data: null, ip: '', status: '', request: '' };
+  logDTO: LogDTO = { id: null, dataCadastro: null, data: null, ip: '', status: '', request: '' };
+
+  warnAlertOptions = { autoClose: false, keepAfterRouteChange: false };
+  successAlertOptions = { autoClose: false, keepAfterRouteChange: true };  
 
   constructor(
     private service: LogService,
@@ -55,7 +58,7 @@ export class LogFormComponent implements OnInit {
       this.formGroup = this.formBuilder.group({
         data: [null, [Validators.required]],
         ip: ['', [Validators.required, Validators.maxLength(15), Validators.pattern(this.formatterHelper.IP_REGEX)]],
-        status: ['', [Validators.required,Validators.pattern(this.formatterHelper.STATUS_REGEX) ]],
+        status: ['', [Validators.required, Validators.pattern(this.formatterHelper.STATUS_REGEX)]],
         request: ['', [Validators.required, Validators.maxLength(255), blankStringValidator]],
         userAgent: ['', [Validators.required, Validators.maxLength(255), blankStringValidator]],
       });
@@ -66,6 +69,8 @@ export class LogFormComponent implements OnInit {
 
     let log: Log = {
       id: this.logDTO.id,
+      dataCadastro: null,
+      nomeArquivo: "",
       data: this.f.data.value,
       ip: this.f.ip.value,
       status: this.f.status.value,
@@ -74,32 +79,24 @@ export class LogFormComponent implements OnInit {
     }
 
     let errorDetails: any[] = this.formHelper.getErrorsDetail(this.formGroup);
-    let warnAlertOptions = { autoClose: false, keepAfterRouteChange: false };
-    let successAlertOptions = { autoClose: false, keepAfterRouteChange: true };
-
-    console.log(log);
 
     if (this.formGroup.invalid) {
-      this.alertService.warn("Opa! Os campos abaixo precisam ser corrigidos:", errorDetails, warnAlertOptions);
+      this.alertService.warn("Opa! Os campos abaixo precisam ser corrigidos:", errorDetails, this.warnAlertOptions);
       return;
     }
 
     if (this.edicao) {
       const id = log.id;
       this.service.editar(log).subscribe(log => {
-        this.alertService.success("Log editado com sucesso. ID: " + id, [], successAlertOptions);
+        this.alertService.success("Log editado com sucesso. ID: " + id, [], this.successAlertOptions);
         this.router.navigate(['../..'], { relativeTo: this.route });
       }, error => {
-        //console.log(error);
-        //this.alertService.error("Não foi possível editar", errorDetails, warnAlertOptions);
       });
     } else {
       this.service.adicionar(log).subscribe(log => {
-        this.alertService.success("Log cadastrado com sucesso", [], successAlertOptions);
+        this.alertService.success("Log cadastrado com sucesso", [], this.successAlertOptions);
         this.router.navigate(['..'], { relativeTo: this.route });
       }, error => {
-        console.log(error);
-        //this.alertService.error("Não foi possível cadastrar", errorDetails, warnAlertOptions);
       });
     }
 

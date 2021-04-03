@@ -18,19 +18,25 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   handleError(httpError) {
-    let detail = "";
+    let status = "";
+    let details = [];
+    console.log(httpError);
+    console.log(httpError.error);
     switch (httpError.status) {
       case 0:
-        detail = "Falha ao conectar servidor";
+        status = "Falha ao conectar servidor";
         break;
       case 422:
-        detail = "(422) - " + httpError.error;
+        status = "(422) - " + httpError.error;
         break;
       default:
-        detail = "(" + httpError.status + ")";
+        status = "(" + httpError.status + ")";
+        if (httpError.error.msg) {
+          details.push(httpError.error.msg);
+        }
         break;
     }
-    this.alertService.error("Ocorreu um erro. " + detail, []);
+    this.alertService.error("Ocorreu um erro. " + status, details);
   }
 
 }

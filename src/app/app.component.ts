@@ -10,7 +10,7 @@ export class AppComponent {
 
   appPages = [
     {
-      title: 'Log',
+      title: 'Logs',
       url: 'logs',
       icon: 'article'
     }

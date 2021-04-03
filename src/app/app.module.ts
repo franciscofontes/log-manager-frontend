@@ -10,6 +10,8 @@ import { AppComponent } from './app.component';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { AlertComponent } from './shared/alert/alert.component';
 import { AlertModule } from './shared/alert/alert.module';
+import { LoaderComponent } from './shared/loader/loader.component';
+import { LoaderModule } from './shared/loader/loader.module';
 
 @NgModule({
   declarations: [
@@ -22,10 +24,12 @@ import { AlertModule } from './shared/alert/alert.module';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    AlertModule
+    AlertModule,
+    LoaderModule
   ],
   providers: [
     AlertComponent,
+    LoaderComponent,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }
   ],

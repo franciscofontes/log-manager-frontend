@@ -1,0 +1,57 @@
+<section class="section">
+
+    <form class="form-inline" role="form" method="POST" enctype="multipart/form-data">
+
+        <i class="material-icons with-title">article</i>
+        <h2 class="subtitle is-inline">Logs pelo arquivo</h2>
+
+        <div class="is-divider"></div>
+
+        <div *ngIf="file" class="tag is-primary mb-5">O arquivo &nbsp;<b>{{file.name}}</b>&nbsp; contem
+            &nbsp;<b>{{quantidadeLinhas}} linhas </b></div>
+
+        <div class="level">
+            <div class="level-left">
+                <div class="level-item">
+                    <div class="file has-name is-fullwidth">
+                        <label class="file-label">
+                            <input class="file-input" [attr.disabled]="sending ? '' : null" type="file" name="resume" (change)="selectFile($event)">
+                            <span class="file-cta">
+                                <span class="file-label">
+                                    Escolha um arquivo...
+                                </span>
+                            </span>
+                            <span *ngIf="file" class="file-name">
+                                {{file.name}}
+                            </span>
+                            <span class="ml-2">
+                                <div class="field is-grouped">
+                                    <div class="control">
+                                        <button class="button is-primary" [disabled]="!file || sending" (click)="upload()">
+                                            <i class="material-icons with-label">file_upload</i>
+                                            <span>Enviar</span>
+                                        </button>
+                                    </div>
+                                    <div class="control">
+                                        <a *ngIf="!sending" routerLink=".." class="button">
+                                            <i class="material-icons with-label">close</i>
+                                            <span>Cancelar</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <progress class="progress is-info" value="{{progress}}" max="100"></progress> -->
+        <div *ngIf="sending">
+            <progress class="progress is-info"></progress>
+            <div class="tag is-medium mb-5">Enviando e extraindo. Isso pode levar alguns minutos, por favor aguarde...</div>
+        </div>
+
+    </form>
+
+</section>

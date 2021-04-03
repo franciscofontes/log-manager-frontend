@@ -6,8 +6,6 @@ import { LogService } from 'src/app/services/log.service';
 import { LogDTO } from 'src/app/models/log.dto';
 import { AlertService } from 'src/app/shared/alert/alert.service';
 import { FormatterHelper } from 'src/app/shared/helpers/formatter.helper';
-import { DialogLogComponent } from '../dialog-log/dialog-log.component';
-import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'log-list',
@@ -30,11 +28,10 @@ export class LogListComponent implements OnInit {
     private service: LogService,
     private route: ActivatedRoute,
     private alertService: AlertService,
-    public formatterHelper: FormatterHelper,
-    public dialog: MatDialog
+    public formatterHelper: FormatterHelper
   ) { }
 
-  ngOnInit() {''
+  ngOnInit() {
     this.page = this.route.snapshot.data.page;
     this.filtrar();
   }
@@ -64,10 +61,10 @@ export class LogListComponent implements OnInit {
     this.direction = event.sorts[0].dir;
     this.service
       .listarPorFiltro(
-        this.filtroPelaData, 
-        this.filtroPeloIP, 
-        this.filtroPeloStatus, 
-        this.filtroPeloRequest, 
+        this.filtroPelaData,
+        this.filtroPeloIP,
+        this.filtroPeloStatus,
+        this.filtroPeloRequest,
         this.filtroPeloUserAgent,
         0,
         undefined,
@@ -79,17 +76,17 @@ export class LogListComponent implements OnInit {
           this.page = page;
         },
         error => { }
-      );    
+      );
   }
 
   handlePage(event) {
     this.service
       .listarPorFiltro(
-        this.filtroPelaData, 
-        this.filtroPeloIP, 
-        this.filtroPeloStatus, 
-        this.filtroPeloRequest, 
-        this.filtroPeloUserAgent,        
+        this.filtroPelaData,
+        this.filtroPeloIP,
+        this.filtroPeloStatus,
+        this.filtroPeloRequest,
+        this.filtroPeloUserAgent,
         event.pageIndex,
         event.pageSize,
         this.orderBy,
@@ -105,15 +102,6 @@ export class LogListComponent implements OnInit {
 
   abrirDialog(log: Log) {
     console.log("abrir dialog " + log);
-    const dialogRef = this.dialog.open(DialogLogComponent);
-    /* const dialogRef = this.dialog.open(DialogLogComponent, {
-      width: '80%',
-      maxHeight: '95%',
-      disableClose: true,
-      data: log
-    });
-    dialogRef.afterClosed().subscribe(result => {
-    }); */
   }
 
   remover(log: Log) {

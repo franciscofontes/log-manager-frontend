@@ -8,14 +8,24 @@
   <div class="level">
     <div class="level-left">
       <div class="level-item">
-        <a routerLink="form" class="button is-primary">
-          <i class="material-icons with-label">add</i>
-          <span>Novo</span>
-        </a>
+        <div class="field is-grouped">
+          <div class="control">
+            <a routerLink="form" class="button is-primary">
+              <i class="material-icons with-label">add</i>
+              <span>Novo</span>
+            </a>
+          </div>
+          <div class="control">
+            <a routerLink="upload" class="button">
+              <i class="material-icons with-label">file_upload</i>
+              <span>Pelo arquivo</span>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
     <div class="level-right">
-      <div class="field has-addons">        
+      <div class="field has-addons">
         <div class="control has-icons-left" style="width: 300px">
           <input appDebounceKeyup (afterDebounce)="filtrar()" [(ngModel)]="filtroPeloIP" class="input"
             placeholder="Filtrar pelo IP" />
@@ -37,20 +47,30 @@
       <thead>
         <tr>
           <th style="width: 5%">ID</th>
+          <th>Data de cadastro</th>
           <th>Data</th>
           <th>IP</th>
           <th>Status</th>
           <th>Request</th>
+          <th>Extraido de arquivo</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of page.content;">
           <td>{{ item.id }}</td>
+          <td>{{ item.dataCadastro | date: formatterHelper.DATE_BR}}</td>
           <td>{{ item.data | date: formatterHelper.DATE}}</td>
           <td>{{ item.ip }}</td>
           <td>{{ item.status }}</td>
           <td>{{ item.request }}</td>
+          <td>
+            <div class="tags">
+              <span *ngIf="item.nomeArquivo" class="tag">Sim</span>
+              <span *ngIf="item.nomeArquivo" class="tag">{{ item.nomeArquivo }}</span>
+              <span *ngIf="!item.nomeArquivo" class="tag">Não</span>
+            </div>
+          </td>
           <td>
             <div class="buttons are-normal">
               <a class="button" (click)="abrirDialog(item)">
@@ -69,7 +89,7 @@
     </table>
 
     <div class="column is-10">
-      <mat-paginator [length]="page.totalElements" [pageIndex]="page.number" [pageSize]="page.size"
+      <mat-paginator [length]="page.totalElements" [pageIndex]="page.number - 1" [pageSize]="page.size"
         [pageSizeOptions]="[12, 24, 36]" [showFirstLastButtons]="true" (page)="pageEvent = handlePage($event)">
       </mat-paginator>
     </div>
