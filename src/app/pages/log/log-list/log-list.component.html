@@ -73,13 +73,13 @@
           </td>
           <td>
             <div class="buttons are-normal">
-              <a class="button" (click)="abrirDialog(item)">
+              <a class="button" (click)="abrirModalDetalhes(item)" data-tooltip="Editar">
                 <i class="material-icons">visibility</i>
               </a>
               <a [routerLink]="['form', item.id]" class="button">
                 <i class="material-icons">edit</i>
               </a>
-              <a class="button tooltip" (click)="remover(item)" data-tooltip="Remover">
+              <a class="button tooltip" (click)="abrirModalRemocao(item)" data-tooltip="Remover">
                 <i class="material-icons">delete</i>
               </a>
             </div>
@@ -98,6 +98,46 @@
 
   <div *ngIf="page.content.length === 0">
     <p>Nenhum item cadastrado.</p>
+  </div>
+
+  <div class="modal {{modalDetalhes}}" *ngIf="log">
+    <div class="modal-background"></div>
+    <div class="modal-card" style="width: 80%">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Detalhes do Log de ID: {{log.id}}</p>
+        <button class="delete" aria-label="close" (click)="fecharModal()"></button>
+      </header>
+      <section class="modal-card-body">
+        <div class="tags are-medium">
+          <span class="tag is-default"><b>Data:</b> &nbsp; {{ log.data | date: formatterHelper.DATE }}</span>
+          <span class="tag is-default"><b>IP:</b> &nbsp; {{ log.ip }}</span>
+          <span class="tag is-default"><b>Status:</b> &nbsp; {{ log.status }}</span>
+          <span class="tag is-default"><b>Request:</b> &nbsp; {{ log.request }}</span>
+        </div>
+        <div class="tags are-medium">
+          <span class="tag is-default"><b>User agent:</b> &nbsp; {{ log.userAgent }}</span>
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button" (click)="fecharModal()">Fechar</button>
+      </footer>
+    </div>
+  </div>
+
+  <div class="modal {{modalRemocao}}" *ngIf="log">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Atenção</p>
+      </header>
+      <section class="modal-card-body">
+        Deseja realmente remover o Log de ID: {{log.id}} ?
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button" (click)="confirmarRemocao()">Sim</button>
+        <button class="button" (click)="fecharModal()">Não</button>
+      </footer>
+    </div>
   </div>
 
 </section>

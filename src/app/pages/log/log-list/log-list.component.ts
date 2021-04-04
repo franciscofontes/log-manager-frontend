@@ -22,7 +22,11 @@ export class LogListComponent implements OnInit {
   orderBy = "";
   direction = "";
 
+  modalDetalhes = "";
+  modalRemocao = "";
+
   page: Page<LogDTO>;
+  log: Log;
 
   constructor(
     private service: LogService,
@@ -32,6 +36,7 @@ export class LogListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.fecharModal();
     this.page = this.route.snapshot.data.page;
     this.filtrar();
   }
@@ -100,8 +105,26 @@ export class LogListComponent implements OnInit {
       );
   }
 
-  abrirDialog(log: Log) {
-    console.log("abrir dialog " + log);
+  abrirModalDetalhes(logDTO: LogDTO) {
+    this.service.buscarPeloId(logDTO.id).subscribe(log => {
+      this.log = log;
+      this.modalDetalhes = "is-active";
+    });
+  }
+
+  abrirModalRemocao(log: Log) {
+    this.log = log;
+    this.modalRemocao = "is-active";
+  }
+
+  fecharModal() {
+    this.modalDetalhes = "";
+    this.modalRemocao = "";
+  }
+
+  confirmarRemocao() {
+    this.remover(this.log);
+    this.fecharModal();
   }
 
   remover(log: Log) {

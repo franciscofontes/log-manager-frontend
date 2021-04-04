@@ -45,7 +45,7 @@ export class LogUploadComponent implements OnInit {
     this.sending = true;
     this.progress = 0;
     await this.uploadService.upload(this.file, "logs").toPromise().then(event => {
-      this.alertService.success("Arquivo extraido com sucesso: Adicionados " + this.quantidadeLinhas + " novos logs", [], this.successAlertOptions);
+      this.alertService.success("Arquivo extraido com sucesso: Adicionado(s) " + this.quantidadeLinhas + " novo(s) log(s)", [], this.successAlertOptions);
       this.sending = false;
       this.router.navigate(['..'], { relativeTo: this.route });
     },

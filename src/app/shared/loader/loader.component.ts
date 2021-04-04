@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/internal/Observable';
-import { LoaderService } from 'src/app/services/loader.service';
+import { LoaderService } from './loader.service';
 
 @Component({
   selector: 'loader',
@@ -14,7 +13,6 @@ export class LoaderComponent implements OnInit {
   constructor(private loaderService: LoaderService) { }
 
   ngOnInit(): void {
-
     this.loaderService.onLoading().subscribe(status => {
       this.loading = status;
       console.log(status);
