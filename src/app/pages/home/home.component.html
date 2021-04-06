@@ -1,12 +1,86 @@
-<section class="hero is-primary is-fullheight">
-    <div class="hero-body" style="align-items: baseline;">
-        <div class="container" style="margin: 0;">
-            <h1 class="title" style="color: white;">
-                <span style="font-weight: normal;">Olá</span>
-            </h1>
-            <h2 class="subtitle" style="color: white;">
-                Bem vindo(a) ao sistema para gerenciamento de logs
-            </h2>
+<section id="home" class="section is-fullheight">
+
+    <h2 class="subtitle" style="color: white;">
+        Bem vindo(a) ao sistema de gerenciamento de logs
+    </h2>
+
+    <div class="tile is-ancestor">
+        <div class="tile is-parent">
+            <article class="tile is-child box">
+                <span class="icon-text">
+                    <figure class="image is-48x48">
+                        <img src="assets/images/baseline_place_black_48dp.png" alt="Image">
+                    </figure>
+                    <span>
+                        <p class="title"> {{quantIps}} </p>
+                        <p class="subtitle">IPs únicos</p>
+                    </span>
+                </span>
+            </article>
+        </div>
+        <div class="tile is-parent">
+            <article class="tile is-child box">
+                <span class="icon-text">
+                    <figure class="image is-48x48">
+                        <img src="assets/images/baseline_smartphone_black_48dp.png" alt="Image">
+                    </figure>
+                    <span>
+                        <p class="title"> {{quantUserAgents}} </p>
+                        <p class="subtitle">User agents únicos</p>
+                    </span>
+                </span>
+            </article>
+        </div>
+        <div class="tile is-parent">
+            <article class="tile is-child box">
+                <span class="icon-text">
+                    <figure class="image is-48x48">
+                        <img src="assets/images/baseline_article_black_48dp.png" alt="Image">
+                    </figure>
+                    <span>
+                        <p class="title"> {{quantLogs}} </p>
+                        <p class="subtitle">Quantidade total de logs</p>
+                    </span>
+                </span>
+            </article>
         </div>
     </div>
+    <div class="tile is-ancestor">
+        <div class="tile is-parent">
+            <article class="tile is-child box">
+                <p class="subtitle">
+                    <b>Detalhe por IP</b>
+                </p>
+                <div class="columns is-vcentered">
+                    <div class="column">
+                        <div class="control has-icons-left has-icons-right">
+                            <input class="input is-medium" [(ngModel)]="ip" placeholder="127.0.0.1">
+                            <span class="icon is-left">
+                                <i class="material-icons">search</i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <button class="button is-primary is-medium" (click)="listarEstatisticasPorIp()">
+                            <i class="material-icons with-label">search</i>
+                            <span>Buscar</span>
+                        </button>
+                    </div>
+                </div>
+                <ul>
+                    <li *ngFor="let item of estatisticas">
+                        <span class="subtitle">
+                            O IP <b>{{ip}}</b> com <b>{{item.userAgent}}</b> tem <b>{{item.quant}}</b> log(s) no intervalo de <b>{{item.difData}}</b>
+                        </span>
+                    </li>
+                </ul>
+               
+                <div class="content">
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="hero is-primary is-fullheight">
 </section>

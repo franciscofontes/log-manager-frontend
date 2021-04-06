@@ -1,6 +1,10 @@
 @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
 @import '~material-icons/iconfont/material-icons.css';
 
+#home {
+    background-color: #74aed0;
+}
+
 .with-label {
     margin-right: 0.5rem;
 }
@@ -25,7 +29,7 @@
 }
 
 .section {
-    padding: 2rem 1.5rem;
+    padding: 1.5rem 1.5rem;
 }
 
 .button.is-primary {

@@ -11,37 +11,33 @@
         <div class="columns">
             <div class="column">
                 <label class="label">Data</label>
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="outline">
                     <input formControlName="data" matInput [matDatepicker]="picker">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-                <span class="is-size-8 pt-0">{{f.data.value | date: formatterHelper.DATE}}</span>
+                </mat-form-field>                
             </div>
-            <!--             
-            <div class="column">p
+            <div class="column">
                 <label class="label">Hora</label>
-                <mat-form-field appearance="fill">
-                    <input formControlName="hora" [ngxTimepicker]="fullTime" [format]="24" matInput readonly>
-                    <ngx-material-timepicker #fullTime></ngx-material-timepicker>
+                <mat-form-field appearance="outline">
+                    <input formControlName="hora" matInput maxlength="12" placeholder="{{formatterHelper.HORA}}">
                 </mat-form-field>
-            </div> 
-            -->
+            </div>
             <div class="column">
                 <label class="label">IP</label>
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="outline">
                     <input formControlName="ip" maxlength="15" matInput>
                 </mat-form-field>
             </div>
             <div class="column">
                 <label class="label">Status</label>
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="outline">
                     <input formControlName="status" matInput mask="000">
                 </mat-form-field>
             </div>
             <div class="column">
                 <label class="label">Request</label>
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="outline">
                     <input formControlName="request" matInput>
                 </mat-form-field>
             </div>
@@ -50,7 +46,7 @@
             <div class="column">
                 <div class="field">
                     <label class="label">User agent</label>
-                    <mat-form-field appearance="fill">
+                    <mat-form-field appearance="outline">
                         <textarea formControlName="userAgent" matInput rows="10" cols="100"></textarea>
                     </mat-form-field>
                 </div>

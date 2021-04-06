@@ -10,14 +10,16 @@ import { IConfig, NgxMaskModule } from 'ngx-mask';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { DirectivesModule } from 'src/app/shared/directives/directives.module';
 import { MatButtonModule } from '@angular/material/button';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { DateAdapter, MatNativeDateModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { LogUploadComponent } from './log-upload/log-upload.component';
 import { UploadFileService } from 'src/app/services/upload-file.service';
+import { PaginatorBR } from 'src/app/shared/paginator/paginator-br.model';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
 
 const routes: Routes = [
   {
@@ -47,6 +49,18 @@ const routes: Routes = [
 ];
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
+
+export const DateFormats = {
+  parse: {
+      dateInput: ['YYYY-MM-DD']
+  },
+  display: {
+      dateInput: 'YYYY-MM-DD',
+      monthYearLabel: 'MMM YYYY',
+      dateA11yLabel: 'LL',
+      monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 @NgModule({
   declarations: [
@@ -78,7 +92,10 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
   providers: [
     LogService,
     LogResolver,
-    UploadFileService
+    UploadFileService,
+    { provide: MatPaginatorIntl, useClass: PaginatorBR },
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: DateFormats }    
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

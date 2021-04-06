@@ -26,28 +26,25 @@
     </div>
     <div class="level-right">
       <div class="field has-addons">
-        <div class="control has-icons-left" style="width: 300px">
-          <input appDebounceKeyup (afterDebounce)="filtrar()" [(ngModel)]="filtroPeloIP" class="input"
-            placeholder="Filtrar pelo IP" />
-          <span class="icon is-left">
-            <i class="material-icons">search</i>
-          </span>
-        </div>
-        <div class="control">
-          <a (click)="limparFiltro()" class="button is-primary tooltip" data-tooltip="Limpar">
-            <i class="material-icons">close</i>
-          </a>
+        <div class="control ml-5">
+          <button class="button is-dark" (click)="abrirModalFiltros()">
+            <i class="material-icons">filter_alt</i>
+          </button>
+          <button class="button ml-2" (click)="limparFiltroEFiltrar()">
+            <i class="material-icons">clear_all</i>
+            <span>Limpar</span>
+          </button>
         </div>
       </div>
     </div>
   </div>
 
   <div *ngIf="page.content.length > 0">
+
     <table class="table is-fullwidth is-striped">
       <thead>
         <tr>
           <th style="width: 5%">ID</th>
-          <th>Data de cadastro</th>
           <th>Data</th>
           <th>IP</th>
           <th>Status</th>
@@ -59,8 +56,7 @@
       <tbody>
         <tr *ngFor="let item of page.content;">
           <td>{{ item.id }}</td>
-          <td>{{ item.dataCadastro | date: formatterHelper.DATE_BR}}</td>
-          <td>{{ item.data | date: formatterHelper.DATE}}</td>
+          <td>{{ item.data | date: formatterHelper.DATA_HORA}}</td>
           <td>{{ item.ip }}</td>
           <td>{{ item.status }}</td>
           <td>{{ item.request }}</td>
@@ -89,7 +85,7 @@
     </table>
 
     <div class="column is-10">
-      <mat-paginator [length]="page.totalElements" [pageIndex]="page.number - 1" [pageSize]="page.size"
+      <mat-paginator [length]="page.totalElements" [pageIndex]="page.number" [pageSize]="page.size"
         [pageSizeOptions]="[12, 24, 36]" [showFirstLastButtons]="true" (page)="pageEvent = handlePage($event)">
       </mat-paginator>
     </div>
@@ -98,6 +94,82 @@
 
   <div *ngIf="page.content.length === 0">
     <p>Nenhum item cadastrado.</p>
+  </div>
+
+  <div class="modal {{modalFiltros}}">
+    <div class="modal-background"></div>
+    <div class="modal-card" style="width: 80%">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Filtros</p>
+        <button class="delete" aria-label="close" (click)="fecharModal()"></button>
+      </header>
+      <section class="modal-card-body">
+        <div class="columns">
+          <div class="column">
+            <label class="label">De</label>
+            <mat-form-field appearance="outline">
+              <input [(ngModel)]="de" matInput [matDatepicker]="pickerDe">
+              <mat-datepicker-toggle matSuffix [for]="pickerDe"></mat-datepicker-toggle>
+              <mat-datepicker #pickerDe></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <input [(ngModel)]="deHora" matInput maxlength="12" placeholder="{{formatterHelper.HORA}}">
+            </mat-form-field>            
+          </div>
+          <div class="column">
+            <label class="label">Ate</label>
+            <mat-form-field appearance="outline">
+              <input [(ngModel)]="ate" matInput [matDatepicker]="pickerAte">
+              <mat-datepicker-toggle matSuffix [for]="pickerAte"></mat-datepicker-toggle>
+              <mat-datepicker #pickerAte></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <input [(ngModel)]="ateHora" matInput maxlength="12" placeholder="{{formatterHelper.HORA}}">
+            </mat-form-field>                        
+          </div>
+          <div class="column">
+            <label class="label">IP</label>
+            <mat-form-field appearance="outline">
+              <input [(ngModel)]="filtro.ip" maxlength="15" matInput>
+            </mat-form-field>
+          </div>
+          <div class="column">
+            <label class="label">Status</label>
+            <mat-form-field appearance="outline">
+              <input [(ngModel)]="filtro.status" maxlength="3" matInput>
+            </mat-form-field>
+          </div>
+          <div class="column">
+            <label class="label">Request</label>
+            <mat-form-field appearance="outline">
+              <input [(ngModel)]="filtro.request" maxlength="255" matInput>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <label class="label">User agent</label>
+            <mat-form-field appearance="outline">
+              <input [(ngModel)]="filtro.userAgent" maxlength="255" matInput>
+            </mat-form-field>
+          </div>
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-success" (click)="confirmarFiltro()">
+          <i class="material-icons">filter_alt</i>
+          <span>Filtrar</span>
+        </button>
+        <button class="button" (click)="fecharModal()">
+          <i class="material-icons">close</i>
+          <span>Fechar</span>
+        </button>
+        <button class="button" (click)="limparFiltro()">
+          <i class="material-icons">clear_all</i>
+          <span>Limpar</span>
+        </button>
+      </footer>
+    </div>
   </div>
 
   <div class="modal {{modalDetalhes}}" *ngIf="log">
@@ -109,7 +181,7 @@
       </header>
       <section class="modal-card-body">
         <div class="tags are-medium">
-          <span class="tag is-default"><b>Data:</b> &nbsp; {{ log.data | date: formatterHelper.DATE }}</span>
+          <span class="tag is-default"><b>Data:</b> &nbsp; {{ log.data | date: formatterHelper.DATA_HORA }}</span>
           <span class="tag is-default"><b>IP:</b> &nbsp; {{ log.ip }}</span>
           <span class="tag is-default"><b>Status:</b> &nbsp; {{ log.status }}</span>
           <span class="tag is-default"><b>Request:</b> &nbsp; {{ log.request }}</span>

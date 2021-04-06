@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -20,6 +21,7 @@ export class LogFormComponent implements OnInit {
   routeParams: Params;
   formGroup: FormGroup;
   logDTO: LogDTO = { id: null, dataCadastro: null, data: null, ip: '', status: '', request: '' };
+  hora;
 
   warnAlertOptions = { autoClose: false, keepAfterRouteChange: false };
   successAlertOptions = { autoClose: false, keepAfterRouteChange: true };  
@@ -48,6 +50,7 @@ export class LogFormComponent implements OnInit {
         this.logDTO = log;
         this.formGroup = this.formBuilder.group({
           data: [log.data, [Validators.required]],
+          hora: [this.getHora(log.data), [Validators.required, Validators.pattern(this.formatterHelper.HORA_GEREX)]],
           ip: [log.ip, [Validators.required, Validators.maxLength(15), Validators.pattern(this.formatterHelper.IP_REGEX)]],
           status: [log.status, [Validators.required, Validators.pattern(this.formatterHelper.STATUS_REGEX)]],
           request: [log.request, [Validators.required, Validators.maxLength(255), blankStringValidator]],
@@ -57,6 +60,7 @@ export class LogFormComponent implements OnInit {
     } else {
       this.formGroup = this.formBuilder.group({
         data: [null, [Validators.required]],
+        hora: [this.hora, [Validators.required, Validators.pattern(this.formatterHelper.HORA_GEREX)]],
         ip: ['', [Validators.required, Validators.maxLength(15), Validators.pattern(this.formatterHelper.IP_REGEX)]],
         status: ['', [Validators.required, Validators.pattern(this.formatterHelper.STATUS_REGEX)]],
         request: ['', [Validators.required, Validators.maxLength(255), blankStringValidator]],
@@ -78,6 +82,7 @@ export class LogFormComponent implements OnInit {
       userAgent: this.f.userAgent.value
     }
 
+    console.log(this.f.hora.value);
     let errorDetails: any[] = this.formHelper.getErrorsDetail(this.formGroup);
 
     if (this.formGroup.invalid) {
@@ -106,4 +111,12 @@ export class LogFormComponent implements OnInit {
     return this.formGroup.controls;
   }
 
+  getHora(data: Date) {
+    let hora: string = "";
+    if (data) {
+      let pipe = new DatePipe("en-US");
+      hora = pipe.transform(data, this.formatterHelper.HORA);
+    }
+    return hora;
+  }  
 }
