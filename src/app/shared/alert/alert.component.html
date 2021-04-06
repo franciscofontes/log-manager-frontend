@@ -1,0 +1,12 @@
+<div *ngFor="let alert of alerts" class="{{cssClass(alert)}}">
+    <button class="delete" (click)="removeAlert(alert)"></button>
+    <span class="icon-text">
+        <span class="material-icons">{{alert.icon}}</span>
+        <span [innerHTML]="alert.message"></span>
+    </span>
+    <div *ngIf="alert && alert.details && alert.details.length > 0" class="content">
+        <ol type="1">
+            <li *ngFor="let detail of alert.details">{{detail}}</li>
+        </ol>
+    </div>
+</div>

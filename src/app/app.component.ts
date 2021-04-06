@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,18 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'log-manager';
+
+  appPages = [
+    {
+      title: 'Logs',
+      url: 'logs',
+      icon: 'article'
+    }
+  ]
+
+  constructor(private router: Router) { }
+
+  openPage(url: string) {
+    this.router.navigate([url]);
+  }
 }

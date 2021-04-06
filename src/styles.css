@@ -1,1 +1,108 @@
-/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import '~material-icons/iconfont/material-icons.css';
+
+#home {
+    background-color: #74aed0;
+}
+
+.with-label {
+    margin-right: 0.5rem;
+}
+
+.with-title {
+    vertical-align: bottom;
+}
+
+.icon-small {
+    font-size: 18px
+}
+
+.is-divider {
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    border-top: .05rem solid #dbdbdb;
+}
+
+.navbar {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.section {
+    padding: 1.5rem 1.5rem;
+}
+
+.button.is-primary {
+    background-color: #45729c;
+}
+
+.button:hover.is-primary {
+    background-color: #45729c;
+    opacity: 0.8;
+}
+
+.button.is-primary[disabled], fieldset[disabled] {
+    background-color: #45729c;
+}
+
+.input.is-primary, .textarea.is-primary {
+    border-color: #45729c;
+}
+
+.button.is-success {
+    background-color: #4ead4e;
+}
+
+.button.is-danger {
+    background-color: #ad4e4e
+}
+
+.snackbar-info button {
+    color: cyan;
+}
+
+.snackbar-alerta button {
+    color: #f4d742;
+}
+
+.snackbar-erro button {
+    color: red;
+}
+
+.tag.is-success {
+    background-color: #4ead4e;
+}
+
+.tag:not(body).is-success {
+    background-color: #4ead4e;
+}
+
+.tag.is-primary {
+    background-color: #45729c;
+}
+
+.tag:not(body).is-primary {
+    background-color: #45729c;
+}
+
+.is-removed {
+    text-decoration: line-through;
+}
+
+.is-not-removed {
+    text-decoration: none;
+}
+
+.hero.is-primary {
+    background-color: #74aed0
+}
+
+.container.is-primary {
+    background-color: #74aed0;
+    margin: 0;
+    padding: 20px;
+}
+
+mat-form-field {
+    width: 100%;
+}
